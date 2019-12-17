@@ -1,0 +1,12 @@
+entity mux is
+  port ( X, Y, Z : in BIT;
+         W : out BIT);
+end mux;
+
+architecture ckt of mux is
+  
+  begin
+    
+    W <= (X and (not(y))) or (Y and Z);
+    
+end ckt;
