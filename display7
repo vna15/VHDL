@@ -1,0 +1,18 @@
+entity bcd_display is
+  port( X : in bit_vector(3 downto 0);
+        D : out bit_vector(0 to 6));
+
+end bcd_display;
+
+architecture display of bcd_display is
+   
+  begin
+    D(0) <= X(1) or X(3) or ((not(X(2))) and (not(X(0)))) or (X(2) and X(0));
+    D(1) <= (not(X(2))) or ((not(X(1))) and (not(X(0)))) or (X(1) and X(0));
+    D(2) <= (not(X(1))) or X(0) or X(2);
+    D(3) <= X(3) or ((not(X(2))) and (not(X(0)))) or ((not(X(2))) and X(1)) or (X(1) and (not(X(0)))) or (X(2) and (not(X(1))) and X(0));
+    D(4) <= ((not(X(2))) and (not(X(0)))) or (X(1) and (not(X(0))));
+    D(5) <= X(3) or ((not(X(1))) and (not(X(0)))) or (X(2) and (not(X(1)))) or (X(2) and (not(X(0))));
+    D(6) <= X(3) or ((not(X(2))) and X(1)) or (X(1) and (not(X(0)))) or (X(2) and (not(X(1))));
+    
+end display;
