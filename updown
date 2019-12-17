@@ -1,0 +1,51 @@
+entity updown is
+  port( CD, L, R, load2, enable2: in BIT;
+        Y: in  bit_vector(3 downto 0);
+        S: out bit_vector(3 downto 0));
+end updown;
+
+architecture ckt of updown is
+  
+signal B, CL, aux : bit_vector (3 downto 0);
+signal m,n,o,t  : bit_vector(2 downto 0);
+  
+  component ffjk is
+   port (clk,J,K,P,C: in  BIT;
+                  q: out BIT);
+  end component;
+  
+  begin
+        
+    B(3) <= not(load2 and Y(3));
+    B(2) <= not(load2 and Y(2));
+    B(1) <= not(load2 and Y(1));
+    B(0) <= not(load2 and Y(0));
+    
+    CL(3) <= not(L or (B(3) and load2));
+    CL(2) <= not(L or (B(2) and load2));
+    CL(1) <= not(L or (B(1) and load2));
+    CL(0) <= not(L or (B(0) and load2));
+    
+    ff1 : ffjk port map( clk => R, J => enable2, K => enable2, P => B(0), C => CL(0), q => aux(0));
+    m(2) <= aux(0) and CD;
+    n(2) <= not(aux(0)) and not(CD);
+    o(2) <= m(2) or n(2);
+    t(2) <= o(2) and enable2;
+    ff2 : ffjk port map( clk => R, J => t(2), K => t(2), P => B(1), C => CL(1), q => aux(1));
+    m(1) <= aux(1) and m(2);
+    n(1) <= not(aux(1)) and n(2);
+    o(1) <= m(1) or n(1);
+    t(1) <= o(1) and enable2;
+    ff3 : ffjk port map( clk => R, J => t(1), K => t(1), P => B(2), C => CL(2), q => aux(2));
+    m(0) <= aux(2) and m(1);
+    n(0) <= not(aux(2)) and n(1);
+    o(0) <= m(0) or n(0);
+    t(0) <= o(0) and enable2;
+    ff4 : ffjk port map( clk => R, J => t(0), K => t(0), P => B(3), C => CL(3), q => aux(3));
+      
+    S(3) <= aux(3);
+    S(2) <= aux(2);
+    S(1) <= aux(1);
+    S(0) <= aux(0);
+      
+end ckt;
