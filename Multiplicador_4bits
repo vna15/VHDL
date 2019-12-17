@@ -1,0 +1,64 @@
+entity multiplicador4bits is
+  port (X,Y : in bit_vector(3 downto 0);
+          Z : out bit_vector(7 downto 0));
+end multiplicador4bits;
+
+architecture ckt of multiplicador4bits is
+
+component Somador9bits is
+  port ( X, Y : in  bit_vector(8 downto 0);
+           ci : in BIT;
+            Q : out bit_vector(8 downto 0);
+            cout : out BIT);
+end component;
+
+signal aux, aux2, aux3, aux4 : bit_vector(3 downto 0);
+signal co1, co2, co3, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, aa, bb, cc, dd, ee, ff, gg, hh, ii, jj, kk, ll : BIT;
+
+begin
+
+  aux(0) <= X(0) and Y(0);
+  aux(1) <= X(0) and Y(1);
+  aux(2) <= X(0) and Y(2);
+  aux(3) <= X(0) and Y(3);
+  
+  aux2(0) <= X(1) and Y(0);
+  aux2(1) <= X(1) and Y(1);
+  aux2(2) <= X(1) and Y(2);
+  aux2(3) <= X(1) and Y(3);
+  
+  somador1 : Somador9bits port map (X(7) => '0', X(6) => '0', X(5) => '0', X(4) => '0', X(3) => '0', X(2) => aux(3), X(1) => aux(2), X(0) => aux(1),
+                                    Y(7) => '0', Y(6) => '0', Y(5) => '0', Y(4) => '0', Y(3) => aux2(3), Y(2) => aux2(2), Y(1) => aux2(1), Y(0) => aux2(0),
+                                    ci => '0', cout => co1,
+                                    Q(8) => jj, Q(7) => aa, Q(6) => bb, Q(5) => cc, Q(4) => a, Q(3) => b, Q(2) => c, Q(1) => d, Q(0) => e);
+    
+  aux3(0) <= X(2) and Y(0);
+  aux3(1) <= X(2) and Y(1);
+  aux3(2) <= X(2) and Y(2);
+  aux3(3) <= X(2) and Y(3);
+  
+  somador2 : Somador9bits port map (X(7) => '0', X(6) => '0', X(5) => '0', X(4) => '0', X(3) => a, X(2) => b, X(1) => c, X(0) => d,
+                                    Y(7) => '0', Y(6) => '0', Y(5) => '0', Y(4) => '0', Y(3) => aux3(3), Y(2) => aux3(2), Y(1) => aux3(1), Y(0) => aux3(0),
+                                    ci => '0', cout => co2,
+                                    Q(8) => kk, Q(7) => dd, Q(6) => ee, Q(5) => ff, Q(4) => f, Q(3) => g, Q(2) => h, Q(1) => i, Q(0) => j);
+
+  aux4(0) <= X(3) and Y(0);
+  aux4(1) <= X(3) and Y(1);
+  aux4(2) <= X(3) and Y(2);
+  aux4(3) <= X(3) and Y(3);
+
+  somador3 : Somador9bits port map (X(7) => '0', X(6) => '0', X(5) => '0', X(4) => '0', X(3) => g, X(2) => g, X(1) => h, X(0) => i,
+                                    Y(7) => '0', Y(6) => '0', Y(5) => '0', Y(4) => '0', Y(3) => aux4(3), Y(2) => aux4(2), Y(1) => aux4(1), Y(0) => aux4(0),
+                                    ci => '0', cout => co3,
+                                    Q(8) => ll, Q(7) => gg, Q(6) => hh, Q(5) => ii, Q(4) => k, Q(3) => l, Q(2) => m, Q(1) => n, Q(0) => o);
+                                    
+  Z(7) <= k;
+  Z(6) <= l;
+  Z(5) <= m;
+  Z(4) <= n;
+  Z(3) <= o;
+  Z(2) <= j;
+  Z(1) <= e;
+  Z(0) <= aux(0);
+  
+end ckt;
