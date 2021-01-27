@@ -42,7 +42,7 @@ f(0) <= X(0) and not(Y(0)) and v(1) and v(2) and v(3) and v(4) and v(5) and v(6)
 
 igual <= v(12) and (v(11) and v(10)) and (v(9) and v(8)) and (v(7) and v(6)) and (v(5) and v(4)) and (v(3) and v(2)) and (v(1) and v(0));
 
-maior <= f(12) and f(11) and f(10) and f(9) and f(8) and f(7) or f(6) or f(5) or f(4) or f(3) or f(2) or f(1) or f(0);
+maior <= f(12) or f(11) or f(10) or f(9) or f(8) or f(7) or f(6) or f(5) or f(4) or f(3) or f(2) or f(1) or f(0);
 
 menor <= not(igual or maior); 
 
