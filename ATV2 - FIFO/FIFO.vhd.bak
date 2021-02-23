@@ -1,0 +1,76 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity FIFO is
+  port (clk, clr, inc_f, inc_i, wr, rd : in std_logic;
+        w_data : in std_logic_vector(12 downto 0);
+		  eq : out std_logic;
+		  r_data : out std_logic_vector(12 downto 0));
+end FIFO;
+
+architecture ckt of FIFO is
+
+  component ContadorDP is
+    port (ld_cnt, clk, clr_cnt : in std_logic;
+          Q : out std_logic_vector (3 downto 0));
+  end component;
+  
+  component ComparadorMagnitude8bits is
+    port(X, Y : in std_logic_vector(7 downto 0);
+         Q : out std_logic);
+  end component;
+  
+  component decodificador is
+    port(X : in std_logic_vector(3 downto 0);
+       en : in std_logic;
+		 Q : out std_logic_vector(15 downto 0));
+  end component;
+  
+  component Registrador13bits is
+    port (X : in  std_logic_vector (12 downto 0);
+          ld_w, ld_r, clr, clk : in std_logic;
+          Q : out std_logic_vector (12 downto 0));
+  end component;
+  
+  signal cont_fim_out, cont_inicio_out : std_logic_vector(3 downto 0);
+  signal add_out_w, add_out_r : std_logic_vector(15 downto 0);
+  
+  
+  begin
+  
+    cont_fim : ContadorDP port map(ld_cnt=>inc_f,clk=>clk,clr_cnt=>clr,Q=>cont_fim_out);
+	 cont_inicio : ContadorDP port map(ld_cnt=>inc_i,clk=>clk,clr_cnt=>clr,Q=>cont_inicio_out);
+	 comparar : ComparadorMagnitude8bits port map(X(7)=>'0',X(6)=>'0',X(5)=>'0',X(4)=>'0',X(3)=>cont_fim_out(3),X(2)=>cont_fim_out(2),
+	                                     X(1)=>cont_fim_out(1),X(0)=>cont_fim_out(0),
+													 Y(7)=>'0',Y(6)=>'0',Y(5)=>'0',Y(4)=>'0',Y(3)=>cont_inicio_out(3),Y(2)=>cont_inicio_out(2),
+	                                     Y(1)=>cont_inicio_out(1),Y(0)=>cont_inicio_out(0),Q=>eq);
+	 decodificar_w : decodificador port map(X=>cont_fim_out,en=>wr,Q=>add_out_w);
+	 decodificar_r : decodificador port map(X=>cont_inicio_out,en=>rd,Q=>add_out_r);
+	 
+	 	 
+	 reg0 : Registrador13bits port map(X=>w_data,ld_w=>add_out_w(0),ld_r=>add_out_r(0),clr=>clr,clk=>clk,Q=>r_data);
+	 reg1 : Registrador13bits port map(X=>w_data,ld_w=>add_out_w(1),ld_r=>add_out_r(1),clr=>clr,clk=>clk,Q=>r_data);
+	 reg2 : Registrador13bits port map(X=>w_data,ld_w=>add_out_w(2),ld_r=>add_out_r(2),clr=>clr,clk=>clk,Q=>r_data);
+	 reg3 : Registrador13bits port map(X=>w_data,ld_w=>add_out_w(3),ld_r=>add_out_r(3),clr=>clr,clk=>clk,Q=>r_data);
+	 reg4 : Registrador13bits port map(X=>w_data,ld_w=>add_out_w(4),ld_r=>add_out_r(4),clr=>clr,clk=>clk,Q=>r_data);
+	 reg5 : Registrador13bits port map(X=>w_data,ld_w=>add_out_w(5),ld_r=>add_out_r(5),clr=>clr,clk=>clk,Q=>r_data);
+	 reg6 : Registrador13bits port map(X=>w_data,ld_w=>add_out_w(6),ld_r=>add_out_r(6),clr=>clr,clk=>clk,Q=>r_data);
+	 reg7 : Registrador13bits port map(X=>w_data,ld_w=>add_out_w(7),ld_r=>add_out_r(7),clr=>clr,clk=>clk,Q=>r_data);
+	 reg8 : Registrador13bits port map(X=>w_data,ld_w=>add_out_w(8),ld_r=>add_out_r(8),clr=>clr,clk=>clk,Q=>r_data);
+	 reg9 : Registrador13bits port map(X=>w_data,ld_w=>add_out_w(9),ld_r=>add_out_r(9),clr=>clr,clk=>clk,Q=>r_data);
+	 reg10 : Registrador13bits port map(X=>w_data,ld_w=>add_out_w(10),ld_r=>add_out_r(10),clr=>clr,clk=>clk,Q=>r_data);
+	 reg11 : Registrador13bits port map(X=>w_data,ld_w=>add_out_w(11),ld_r=>add_out_r(11),clr=>clr,clk=>clk,Q=>r_data);
+	 reg12 : Registrador13bits port map(X=>w_data,ld_w=>add_out_w(12),ld_r=>add_out_r(12),clr=>clr,clk=>clk,Q=>r_data);
+	 reg13 : Registrador13bits port map(X=>w_data,ld_w=>add_out_w(13),ld_r=>add_out_r(13),clr=>clr,clk=>clk,Q=>r_data);
+	 reg14 : Registrador13bits port map(X=>w_data,ld_w=>add_out_w(14),ld_r=>add_out_r(14),clr=>clr,clk=>clk,Q=>r_data);
+	 reg15 : Registrador13bits port map(X=>w_data,ld_w=>add_out_w(15),ld_r=>add_out_r(15),clr=>clr,clk=>clk,Q=>r_data);
+	 
+end ckt;
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
