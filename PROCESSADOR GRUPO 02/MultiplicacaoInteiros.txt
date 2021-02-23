@@ -1,0 +1,111 @@
+## Memória de dados ##
+
+addr[0] - 0
+
+addr[1] - Número que vai ser multiplicado
+
+addr[2] - Quantidade de vezes
+
+addr[3] - 1
+
+addr[4] - "10000000"
+
+
+
+
+//  espaço para guardar número multiplicado
+
+addr[5],addr[6]
+
+
+
+###########################
+
+Rh,Rj // registrador Temporário
+
+0: LDR Ra, addr[0] // Registrador do resultado mais significativo
+1: LDR Rb, addr[0] // Registrador do resultado menos significativo
+2: LDR Rc, addr[1] // Registrador com o incremento da multiplicação
+3: LDR Rd, addr[2] // Registrador com o quantidade de vezes da multiplicação
+4: LDR Re, addr[0] // Registrador para manter o zero para comparações
+5: LDR Rg, addr[3] // registrador de incremento/decremento unitário
+6: LDR Rh, addr[4] // Reg para somar com números e ver se são negativos
+7: LDR Ri, addr[0] // Registrador de sinal 
+8: ADD Rj,Rc,Rh // Soma primeiro número com "10000000"
+9: JNC 13 // OLHA SEGUNDO Número
+10: SUB Rc,Rc,Rg // subtrai um do primeiro número
+11: NOT Rc,Rc // Nega o primeiro número
+12: ADD Ri,Ri,Rg// incrementa registrador de sinal
+13: ADD Rj,Rd,Rh // Soma  segundo número  com "10000000" (OLHA SEGUNDO NÙMERO)
+14: JNC 18 // (vai para multiplicação)
+15: SUB Rd,Rd,Rg // subtrai um do segundo número
+16: NOT Rd,Rd // Nega o segundo número
+17: ADD Ri,Ri,Rg// incrementa registrador de sinal
+18: CMP Rh,Rd,Re // Comparar o registrador de quantidade de vezes com 0 ( value = 6) (COMEÇA A MULTIPLICAÇÂO)
+19: JNZ 25 // Fim da multiplicação
+20: ADD Rb,Rb,Rc // Soma no registrador mais baixo
+21: JNC  23	    // Se não tiver carry, ignora o incremento no registrador mais alto
+22: ADD Ra, Ra, Rg// incrementa no registrador mais alto
+23: SUB Rd, Rd, Rg// subtrai um da quantidade de vezes que ainda precisa multiplicar. 
+24: JMP 18 // reinicia a rotina
+25: CMP Rh, Ri, Rg // compara registrador de sinal com 1
+26: JZ 32 // Se o resultado é positivo é só salvar na memória
+27: NOT Ra,Ra // Começa o complemento a dois do resultado
+28: NOT Rb,Rb // Nega registrador mais baixo
+29: ADD Rb,Rb,Rg // complemento
+30: JNC 32 // (SALVA NA MEMóRIA)
+31: ADD Ra,Ra,Rg 
+32: STR Ra, addr[5] // salva na memória RAM o valor mais alto 
+33: STR Rb, addr[6] // salva na memória RAM o valor mais baixo
+34: HLT
+
+
+
+***************************
+
+memória de instrução:
+0: 0001000000000000;
+1: 0001000100000000;
+2: 0001001000000001;
+3: 0001001100000010;
+4: 0001010000000000;
+5: 0001011000000011;
+6: 0001011100000100;
+7: 0001100000000000;
+8: 0100100100100111;
+9: 1100000000001101;
+10: 0101001000100110;
+11: 1000001000000010;
+12: 0100100010000110;
+13: 0100100100110111;
+14: 1100000000010010;
+15: 0101001100110110;
+16: 1000001100000011;
+17: 0100100010000110;
+18: 1010011100110100;
+19: 1110000000011001;
+20: 0100000100010010;
+21: 1100000000010111;
+22: 0100000000000110;
+23: 0101001100110110;
+24: 1011000000010010;
+25: 1010011110000110;
+26: 1111000000100000;
+27: 1000000000000000;
+28: 1000000100000001;
+29: 0100000100010110;
+30: 1100000000100000;
+31: 0100000000000110;
+32: 0010000000000101;
+33: 0010000100000110;
+
+[34..255]  :   0000000000000000;
+
+memória de dados:
+
+	0	: 0;
+	1	: 01111111;
+	2	: 1010;
+	3	: 1;
+	4	: 10000000;
+[5..255]  :   0;

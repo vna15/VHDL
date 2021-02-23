@@ -1,0 +1,87 @@
+## Memória de dados ##
+
+addr[0] - 0
+
+addr[1] - 1
+
+addr[2] - 10
+
+addr[3] - 100
+
+addr[4] - Número a ser convertido
+
+addr[5] - 48
+
+
+//  espaço para guardar número no formato ASCII
+
+addr[6],addr[7],addr[8]
+
+
+
+###########################
+
+Rh // registrador Temporário
+
+0: LDR Ra, addr[4] // Número a ser covertido - principal - unidades
+1: LDR Rb, addr[0] // registrador para guardar dezena
+2: LDR Rc, addr[0] // registrador para guardar centena
+3: LDR Rd, addr[1] // Incremento unitário
+4: LDR Re, addr[2] // 10
+5: LDR Rf, addr[3] // 100
+6: LDR Rg, addr[5] // 48	
+7: SUB,Rh,Ra,Rf; // Rh = Numero a ser convertido - 100 (CENTENA)
+8: JNC 12
+9: MOV Ra,Rh // move o resultado para o registrador principal
+10: ADD Rc,Rc,Rd // centena = centena + 1
+11: JMP 7
+12: SUB,Rh,Ra,Re; // Rh = Numero a ser convertido - 10 (DEZENA)
+13: JNC 17 
+14: MOV Ra,Rh // move o resultado para o registrador principal
+15: ADD Rb,Rb,Rd // dezena = dezena + 1
+16: JMP 12
+17: ADD Ra,Ra,Rg // (OFFSET)
+18: ADD Rb,Rb,Rg //
+19: ADD Rc,Rc,Rg //
+20: STR Rc,addr[6]
+21: STR Rb,addr[7]
+22: STR Ra,addr[8]
+
+
+Instruções: 
+
+0: 0001000000000100;
+1: 0001000100000000;
+2: 0001001000000000;
+3: 0001001100000001;
+4: 0001010000000010;
+5: 0001010100000011;
+6: 0001011000000101;	
+7: 0101011100000101;
+8: 1100000000001100;
+9: 0011000000000111;
+10: 0100001000100011;
+11: 1011000000000111;
+12: 0101011100000100;
+13: 1100000000010001;
+14: 0011000000000111;
+15: 0100000100010011;
+16: 1011000000001100;
+17: 0100000000000110;
+18: 0100000100010110;
+19: 0100001000100110;
+20: 0010001000000110;
+21: 0010000100000111;
+22: 0010000000001000;
+[23..255]  :   0000000000000000;
+
+memória de dados: 
+
+
+	0	: 0;
+	1	: 1;
+	2	: 1010;
+	3	: 1100100;
+	4	: 1010; - número a ser convertido
+	5	: 110000;
+[6..255]  :   0;

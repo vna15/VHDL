@@ -1,0 +1,30 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity processador is
+    port ( )
+end processador;
+
+architecture ckt of processador is
+
+component bancoderegistradores is
+    port (addr_wr, addr_rd_1, addr_rd_2 : in std_logic_vector(3 downto 0);
+	       w_data : in std_logic_vector(7 downto 0);
+	       wr, rd_1, rd_2, clk, clr : in std_logic;
+			 r_data_1, r_data_2 : out std_logic_vector(7 downto 0));
+end component;
+
+component mde is
+    port ( ck ,opHLT, opLDR, opSTR, opMOV, opADD, opSUB, opAND, opOR, opNOT, opXOR, opCMP, opJMP, opJNC,opJC,opJNZ,opJZ,flagCarry,flagULA   : in std_logic;
+         SEL_addr_RF_escrita,SEL_RF_2_SUM,SEL_RF_leitura_1,en_RF_leitura_1,en_RF_leitura_2,en_RF_escrita,D_en,D_wr,flagCarry_ld,flagCarry_clr,flagULA_ld,flagULA_clr,PC_cnt,PC_ld,PC_clr,IR_ld,I_rd : out std_logic;
+          SEL_RF   : out std_logic_vector (1 downto 0);
+          SEL_ULA  : out std_logic_vector (2 downto 0)
+);
+end component;
+
+component contadordeprograma is
+    port (pc_ld, pc_clr, clk, en_paralelo : in std_logic;
+	       pc_jump : in std_logic_vector(7 downto 0);
+	       instrucao : out std_logic_vector(7 downto 0));
+end component;
+
