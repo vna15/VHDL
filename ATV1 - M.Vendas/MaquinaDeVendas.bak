@@ -1,0 +1,27 @@
+library ieee;
+use std_logic_1164.all;
+
+entity controle is
+   port (c, clk : in std_logic;
+	      d : out std_logic);
+end controle;
+
+architecture ckt of controle is
+ 
+ component datapath is
+   port (S,A : in std_logic_vector(7 downto 0);
+	      clk, reg_ld, reg_clr: in std_logic;
+			reg_mq : out std_logic);
+ end component;
+ 
+ component ffd is
+    port (clk,D,P,C : in  std_logic;
+                  q : out std_logic);
+  end component;
+ 
+ signal red_c_ld, reg_c_clr, n1, n0, s1, s2 : std_logic;
+ 
+ begin
+ 
+  s1 : ffd port map(clk=>clk,D=>n1,P=>'1',C=>'1',)
+	

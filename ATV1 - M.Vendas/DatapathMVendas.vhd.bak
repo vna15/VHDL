@@ -1,0 +1,28 @@
+library ieee;
+use std_logic_1164.all;
+
+entity datapath is
+   port (S,A : in std_logic_vector(7 downto 0);
+	      clk, reg_ld, reg_clr: in std_logic;
+			reg_mq : out std_logic);
+end datapath;
+
+architecture ckt of datapath is
+
+ component Registrador8bits is
+   port (X : in  std_logic_vector (7 downto 0);
+        ld, clr, clk : in std_logic;
+        Q : out std_logic_vector (7 downto 0));
+ end component;
+ 
+ component ComparadorMagnitude8bits is
+   port( X, Y : in std_logic_vector(7 downto 0);
+        Q : out std_logic);
+ end component;
+ 
+ component Somador8bits is
+   port ( X, Y : in  std_logic_vector(7 downto 0);
+           ci : in std_logic;
+            Q : out std_logic_vector(7 downto 0);
+            cout : out std_logic);
+ end component;

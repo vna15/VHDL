@@ -1,0 +1,42 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity controle is
+   port (c, clk, reset : in std_logic;
+	      S,A : in std_logic_vector(7 downto 0);
+	      d : out std_logic);
+end controle;
+
+architecture ckt of controle is
+ 
+ component datapath is
+   port (S,A : in std_logic_vector(7 downto 0);
+	      clk, reg_ld, reg_clr: in std_logic;
+			reg_mq : out std_logic);
+ end component;
+ 
+ component ffd is
+    port (clk,D,P,C : in  std_logic;
+                  q : out std_logic);
+  end component;
+ 
+ signal reg_c_ld, reg_c_clr, n1, n0, s1, s0, tot_lt : std_logic;
+ 
+ begin
+ 
+  s11 : ffd port map(clk=>clk,D=>n1,P=>'1',C=>reset,q=>s1);
+  s00 : ffd port map(clk=>clk,D=>n0,P=>'1',C=>reset,q=>s0);
+  
+  n1 <= (not(s1) and s0 and not(c) and tot_lt) or (not(s1) and s0 and c);
+  n0 <= (not(s1) and s0 and not(c)) or not(s0);
+  reg_c_ld <= s1 and not(s0);
+  reg_c_clr <= not(s1) and not(s0);
+  d <= s1 and s0;
+  
+  comando : datapath port map(S(0)=>S(0),S(1)=>S(1),S(2)=>S(2),S(3)=>S(3),S(4)=>S(4),S(5)=>S(5),S(6)=>S(6),S(7)=>S(7),
+                              A(0)=>A(0),A(1)=>A(1),A(2)=>A(2),A(3)=>A(3),A(4)=>A(4),A(5)=>A(5),A(6)=>A(6),A(7)=>A(7),
+										clk=>clk,reg_ld=>reg_c_ld,reg_clr=>reg_c_clr,reg_mq=>tot_lt);
+										
+  end ckt;
+  
+	
